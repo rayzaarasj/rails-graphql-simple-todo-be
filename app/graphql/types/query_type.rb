@@ -7,6 +7,18 @@ module Types
     # Add root-level fields here.
     # They will be entry points for queries on your schema.
 
+    field :todos, [Types::TodoType], null: true
+
+    def todos
+      Todo.all()
+    end
+
+    field :categories, [Types::CategoryType], null: true
+
+    def categories
+      Category.all()
+    end
+
     # TODO: remove me
     field :test_field, String, null: false,
       description: "An example field added by the generator"
