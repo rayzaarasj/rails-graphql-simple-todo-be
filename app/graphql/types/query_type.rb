@@ -10,7 +10,31 @@ module Types
     field :todos, [Types::TodoType], null: true
 
     def todos
-      Todo.all()
+      a = Todo.all()
+      puts a
+      a
+    end
+
+    field :todo, [Types::TodoType], null: true do
+      argument :title, String, required: false
+    end
+
+    def todo(title:)
+      Todo.where("title = '" + title + "'")
+    end
+
+    field :todo_title, [Types::TodoType], null: true do
+      argument :title, String, required: false
+    end
+
+    def todo_title(title:)
+      result = Array.new()
+      Todo.all.each do |todo|
+        if todo.title.include?(title)
+          result << todo
+        end
+      end
+      return result
     end
 
     field :categories, [Types::CategoryType], null: true
