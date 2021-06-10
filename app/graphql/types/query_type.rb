@@ -10,9 +10,7 @@ module Types
     field :todos, [Types::TodoType], null: true
 
     def todos
-      a = Todo.all()
-      puts a
-      a
+      Todo.all()
     end
 
     field :todo, [Types::TodoType], null: true do
@@ -32,6 +30,23 @@ module Types
       Todo.all.each do |todo|
         if todo.title.include?(title)
           result << todo
+        end
+      end
+      return result
+    end
+
+    field :todo_by_categories, [Types::TodoType], null: true do
+      argument :categories, [String], required: true
+    end
+
+    def todo_by_categories(categories:)
+      result = Set.new()
+      categories.each do |category|
+        categoryObject = Category.where("category = '" + category + "'").first
+        Todo.all.each do |todo|
+          if todo.categories.include?(categoryObject)
+            result << todo
+          end
         end
       end
       return result
