@@ -57,7 +57,7 @@ module Types
     end
 
     def todo_by_categories_query(categoriesParam:)
-      Todo.joins(:categories).distinct.where(:categories => {:category => categoriesParam})
+      Todo.joins(:categories).distinct.where(:categories => {:category => categoriesParam}).order("todos.deadline ASC")
     end
 
     field :categories, [Types::CategoryType], null: true
