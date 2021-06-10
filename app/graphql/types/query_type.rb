@@ -52,6 +52,14 @@ module Types
       return result
     end
 
+    field :todo_by_categories_query, [Types::TodoType], null: true do
+      argument :categoriesParam, [String], required: true
+    end
+
+    def todo_by_categories_query(categoriesParam:)
+      Todo.joins(:categories).distinct.where(:categories => {:category => categoriesParam})
+    end
+
     field :categories, [Types::CategoryType], null: true
 
     def categories
