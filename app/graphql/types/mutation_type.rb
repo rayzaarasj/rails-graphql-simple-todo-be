@@ -3,6 +3,7 @@ module Types
     field :create_todo, mutation: Mutations::CreateTodo
     field :update_todo, mutation: Mutations::UpdateTodo
     field :create_category, mutation: Mutations::CreateCategory
+    field :update_category, mutation: Mutations::UpdateCategory
 
     # TODO: remove me
     field :test_field, String, null: false,
