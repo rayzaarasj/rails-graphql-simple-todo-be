@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe Todo, :type => :model do
-
   subject {
     described_class.new(
       title: "test_title",
