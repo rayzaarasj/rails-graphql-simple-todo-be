@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 module Mutations
@@ -8,7 +10,9 @@ module Mutations
           category_1, category_2 = create_list(:category, 2)
 
           expect do
-            post "/graphql", params: { query: query(category_ids: [category_1.id, category_2.id], deadline: (DateTime.now + 1.day).to_s) }
+            post '/graphql',
+                 params: { query: query(category_ids: [category_1.id, category_2.id],
+                                        deadline: (DateTime.now + 1.day).to_s) }
           end.to change { Todo.count }.by(1)
         end
 
@@ -16,27 +20,29 @@ module Mutations
           category_1, category_2 = create_list(:category, 2)
 
           deadline_date = (DateTime.now + 1.day)
-          post "/graphql", params: { query: query(category_ids: [category_1.id, category_2.id], deadline: deadline_date.to_s) }
+          post '/graphql',
+               params: { query: query(category_ids: [category_1.id, category_2.id], deadline: deadline_date.to_s) }
           json = JSON.parse(response.body)
           data = json['data']['createTodo']
 
           expect(data).to include(
             'todo' => {
-            'id'          => be_present,
-            'title'       => 'test_title',
-            'description' => 'test_description',
-            'deadline'    => "#{deadline_date.gmtime.strftime('%Y-%m-%dT%H:%M:%SZ')}",
-            'categories'  => [
-              {
-                'id' => category_1.id.to_s,
-                'category' => category_1.category
-              },
-              {
-                'id' => category_2.id.to_s,
-                'category' => category_2.category
-              }
-            ]
-          })
+              'id' => be_present,
+              'title' => 'test_title',
+              'description' => 'test_description',
+              'deadline' => deadline_date.gmtime.strftime('%Y-%m-%dT%H:%M:%SZ').to_s,
+              'categories' => [
+                {
+                  'id' => category_1.id.to_s,
+                  'category' => category_1.category
+                },
+                {
+                  'id' => category_2.id.to_s,
+                  'category' => category_2.category
+                }
+              ]
+            }
+          )
         end
       end
 

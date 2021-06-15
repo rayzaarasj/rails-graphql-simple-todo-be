@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 module Mutations
@@ -6,12 +8,12 @@ module Mutations
       describe '.resolve' do
         it 'creates a category' do
           expect do
-            post '/graphql', params: { query: query() }
+            post '/graphql', params: { query: query }
           end.to change { Category.count }.by(1)
         end
 
         it 'returns a category' do
-          post "/graphql", params: { query: query() }
+          post '/graphql', params: { query: query }
           json = JSON.parse(response.body)
           data = json['data']['createCategory']
 
@@ -24,7 +26,7 @@ module Mutations
         end
       end
 
-      def query()
+      def query
         <<~GQL
           mutation{
             createCategory(input: {

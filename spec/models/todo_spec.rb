@@ -1,13 +1,15 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-RSpec.describe Todo, :type => :model do
-  subject {
+RSpec.describe Todo, type: :model do
+  subject do
     described_class.new(
-      title: "test_title",
-      description: "test_description",
+      title: 'test_title',
+      description: 'test_description',
       deadline: DateTime.now + 1.day
     )
-  }
+  end
 
   it 'is valid with valid attributes' do
     expect(subject).to be_valid

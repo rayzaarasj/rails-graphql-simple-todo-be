@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Types
   class QueryType < Types::BaseObject
     # Add `node(id: ID!) and `nodes(ids: [ID!]!)`
@@ -10,7 +12,7 @@ module Types
     field :todos, [Types::TodoType], null: true
 
     def todos
-      Todo.all()
+      Todo.all
     end
 
     field :todo, [Types::TodoType], null: true do
@@ -18,7 +20,7 @@ module Types
     end
 
     def todo(title:)
-      Todo.where("title = '" + title + "'")
+      Todo.where("title = '#{title}'")
     end
 
     field :todo_title, [Types::TodoType], null: true do
@@ -26,13 +28,11 @@ module Types
     end
 
     def todo_title(title:)
-      result = Array.new()
+      result = []
       Todo.all.each do |todo|
-        if todo.title.include?(title)
-          result << todo
-        end
+        result << todo if todo.title.include?(title)
       end
-      return result
+      result
     end
 
     field :todo_by_categories, [Types::TodoType], null: true do
@@ -40,16 +40,14 @@ module Types
     end
 
     def todo_by_categories(categories:)
-      result = Set.new()
+      result = Set.new
       categories.each do |category|
-        categoryObject = Category.where("category = '" + category + "'").first
+        categoryObject = Category.where("category = '#{category}'").first
         Todo.all.each do |todo|
-          if todo.categories.include?(categoryObject)
-            result << todo
-          end
+          result << todo if todo.categories.include?(categoryObject)
         end
       end
-      return result
+      result
     end
 
     field :todo_by_categories_query, [Types::TodoType], null: true do
@@ -57,20 +55,20 @@ module Types
     end
 
     def todo_by_categories_query(categoriesParam:)
-      Todo.joins(:categories).distinct.where(:categories => {:category => categoriesParam}).order("todos.deadline ASC")
+      Todo.joins(:categories).distinct.where(categories: { category: categoriesParam }).order('todos.deadline ASC')
     end
 
     field :categories, [Types::CategoryType], null: true
 
     def categories
-      Category.all()
+      Category.all
     end
 
     # TODO: remove me
     field :test_field, String, null: false,
-      description: "An example field added by the generator"
+                               description: 'An example field added by the generator'
     def test_field
-      "Hello World!"
+      'Hello World!'
     end
   end
 end
