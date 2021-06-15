@@ -1,22 +1,26 @@
-class Mutations::DeleteCategory < Mutations::BaseMutation
-  argument :id, Integer, required: true
+# frozen_string_literal: true
 
-  field :deletedId, Integer, null: false
-  field :errors, [String], null: false
+module Mutations
+  class DeleteCategory < Mutations::BaseMutation
+    argument :id, Integer, required: true
 
-  def resolve(id:)
-    category = Category.find(id)
+    field :deletedId, Integer, null: false
+    field :errors, [String], null: false
 
-    if category.destroy
-      {
-        deletedId: id,
-        errors: nil
-      }
-    else
-      {
-        deletedId: nil,
-        errors: category.errors.full_messages
-      }
+    def resolve(id:)
+      category = Category.find(id)
+
+      if category.destroy
+        {
+          deletedId: id,
+          errors: nil
+        }
+      else
+        {
+          deletedId: nil,
+          errors: category.errors.full_messages
+        }
+      end
     end
   end
 end

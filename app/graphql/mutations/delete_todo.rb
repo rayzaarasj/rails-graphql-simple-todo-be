@@ -1,22 +1,26 @@
-class Mutations::DeleteTodo < Mutations::BaseMutation
-  argument :id, Integer, required: true
+# frozen_string_literal: true
 
-  field :deletedId, Integer, null: false
-  field :errors, [String], null: false
+module Mutations
+  class DeleteTodo < Mutations::BaseMutation
+    argument :id, Integer, required: true
 
-  def resolve(id:)
-    todo = Todo.find(id)
+    field :deletedId, Integer, null: false
+    field :errors, [String], null: false
 
-    if todo.destroy
-      {
-        deletedId: id,
-        errors: nil
-      }
-    else
-      {
-        deletedId: nil,
-        errors: todo.errors.full_messages
-      }
+    def resolve(id:)
+      todo = Todo.find(id)
+
+      if todo.destroy
+        {
+          deletedId: id,
+          errors: nil
+        }
+      else
+        {
+          deletedId: nil,
+          errors: todo.errors.full_messages
+        }
+      end
     end
   end
 end
