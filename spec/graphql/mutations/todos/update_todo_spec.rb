@@ -71,7 +71,7 @@ module Mutations
         end
       end
 
-      def query(todo_id:, category_ids:, deadline:); 
+      def query(todo_id:, category_ids:, deadline:)
         <<~GQL
         mutation{
           updateTodo(input: {
