@@ -28,12 +28,6 @@ module Mutations
           )
         end
 
-        # let(todo) do
-        #   todo.categories << category_1
-        #   todo.categories << category_2
-        #   todo.reload          
-        # end
-
         subject do
           post '/graphql', params: { query: query(todo_id: todo.id, 
                                      category_ids:[category_2.id,category_3.id], 
