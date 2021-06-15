@@ -32,6 +32,9 @@ group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'factory_bot_rails'
   gem 'rspec-rails', '>=3.9.0'
+  gem 'rubocop', require: false
+  gem 'rubocop-performance', require: false
+  gem 'rubocop-rubycw', require: false
 end
 
 group :development do
@@ -49,4 +52,4 @@ gem 'graphiql-rails', '~> 1.7'
 
 gem 'faker', '~> 2.18'
 
-gem 'rubocop', require: false
+
