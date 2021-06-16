@@ -6,22 +6,25 @@ module Mutations
   module Todos
     RSpec.describe CreateTodo, type: :request do
       describe '.resolve' do
-        it 'creates a todo' do
-          category_1, category_2 = create_list(:category, 2)
+        let(:category_1) do
+          create(:category)
+        end
 
-          expect do
-            post '/graphql',
-                 params: { query: query(category_ids: [category_1.id, category_2.id],
-                                        deadline: (DateTime.now + 1.day).to_s) }
-          end.to change { Todo.count }.by(1)
+        let(:category_2) do
+          create(:category)
+        end
+
+        subject do
+          post '/graphql', params: { query: query(category_ids: [category_1.id, category_2.id],
+                                                  deadline: (DateTime.now + 1.day).to_s) }
+          response
+        end
+        it 'creates a todo' do
+          expect { subject }.to change { Todo.count }.by(1)
         end
 
         it 'returns a todo' do
-          category_1, category_2 = create_list(:category, 2)
-
-          deadline_date = (DateTime.now + 1.day)
-          post '/graphql',
-               params: { query: query(category_ids: [category_1.id, category_2.id], deadline: deadline_date.to_s) }
+          is_expected.to have_http_status :ok
           json = JSON.parse(response.body)
           data = json['data']['createTodo']
 
@@ -30,7 +33,7 @@ module Mutations
               'id' => be_present,
               'title' => 'test_title',
               'description' => 'test_description',
-              'deadline' => deadline_date.gmtime.strftime('%Y-%m-%dT%H:%M:%SZ').to_s,
+              'deadline' => (DateTime.now + 1.day).gmtime.strftime('%Y-%m-%dT%H:%M:%SZ').to_s,
               'categories' => [
                 {
                   'id' => category_1.id.to_s,
