@@ -1,0 +1,146 @@
+DEMO
+
+mutation{
+  backend_category: createCategory(input:{
+    category: "backend"
+  }) {
+    category{
+      id
+      category
+    }
+  }
+  frontend_category:createCategory(input:{
+    category: "frontend"
+  }) {
+    category{
+      id
+      category
+    }
+  }
+}
+
+mutation{
+  backend_dev_todo: createTodo(input:{
+    title: "Create Backend"
+    description: "Create Backend for Personal Project"
+    deadline: "2021-06-20T17:00:00+00:00"
+    categories: [31]
+  }) {
+    todo {
+      id
+      title
+      description
+      deadline
+      categories {
+        id
+        category
+      }
+    }
+  }
+  
+  frontend_dev_todo: createTodo(input:{
+    title: "Create Frontend"
+    description: "Create Frontend for Personal Project"
+    deadline: "2021-06-21T17:00:00+00:00"
+    categories: [32]
+  }) {
+    todo {
+      id
+      title
+      description
+      deadline
+      categories {
+        id
+        category
+      }
+    }
+  }
+  
+  integration_dev_todo: createTodo(input:{
+    title: "Integrate Frontend and Backend"
+    description: "Integrate Frontend and Backend for Personal Project"
+    deadline: "2021-06-22T17:00:00+00:00"
+    categories: [31, 32]
+  }) {
+    todo {
+      id
+      title
+      description
+      deadline
+      categories {
+        id
+        category
+      }
+    }
+  }
+}
+
+query {
+  todos {
+    id
+    title
+    description
+    deadline
+    categories {
+      id
+      category
+    }
+  }
+  categories {
+    id
+    category
+  }
+  todosByCategoryIds(categoryIds:[31]) {
+    id
+    title
+    description
+    deadline
+    categories {
+      id
+      category
+    }
+  }
+}
+
+mutation {
+  updateCategory(input:{
+    id: 31
+    category: "バックエンド"
+  }) {
+    category {
+      id
+      category
+    }
+  }
+  updateTodo(input:{
+    id: 34
+    title: "バックエンドを作る"
+    description: "個人プロジェクトのバックエンドを作る"
+    deadline: null
+    categories: null
+  }) {
+    todo {
+      id
+      title
+      description
+      deadline
+      categories {
+        id
+        category
+      }
+    }
+  }
+}
+
+mutation {
+  deleteTodo(input:{
+    id: 34
+  }) {
+    deletedId
+  }
+  deleteCategory(input:{
+    id: 31
+  }) {
+    deletedId
+  }
+}

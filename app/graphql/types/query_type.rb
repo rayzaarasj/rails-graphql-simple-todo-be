@@ -15,47 +15,47 @@ module Types
       Todo.all
     end
 
-    field :todo, [Types::TodoType], null: true do
-      argument :title, String, required: false
+    field :todos_by_title, [Types::TodoType], null: true do
+      argument :title, String, required: true
     end
 
-    def todo(title:)
-      Todo.where("title = '#{title}'")
-    end
-
-    field :todo_title, [Types::TodoType], null: true do
-      argument :title, String, required: false
-    end
-
-    def todo_title(title:)
+    def todos_by_title(title:)
       result = []
       Todo.all.each do |todo|
-        result << todo if todo.title.include?(title)
+        result << todo if todo.title.downcase.include?(title.downcase)
       end
       result
     end
 
-    field :todo_by_categories, [Types::TodoType], null: true do
-      argument :categories, [String], required: true
+    field :todo_by_id, Types::TodoType, null: true do
+      argument :id, Integer, required: true
     end
 
-    def todo_by_categories(categories:)
-      result = Set.new
-      categories.each do |category|
-        categoryObject = Category.where("category = '#{category}'").first
-        Todo.all.each do |todo|
-          result << todo if todo.categories.include?(categoryObject)
-        end
-      end
-      result
+    def todo_by_id(id:)
+      Todo.find(id)
     end
 
-    field :todo_by_categories_query, [Types::TodoType], null: true do
-      argument :categoriesParam, [String], required: true
+    # field :todo_by_categories, [Types::TodoType], null: true do
+    #   argument :categories, [String], required: true
+    # end
+
+    # def todo_by_categories(categories:)
+    #   result = Set.new
+    #   categories.each do |category|
+    #     categoryObject = Category.where("category = '#{category}'").first
+    #     Todo.all.each do |todo|
+    #       result << todo if todo.categories.include?(categoryObject)
+    #     end
+    #   end
+    #   result
+    # end
+
+    field :todos_by_category_names, [Types::TodoType], null: true do
+      argument :category_names, [String], required: true
     end
 
-    def todo_by_categories_query(categoriesParam:)
-      Todo.joins(:categories).distinct.where(categories: { category: categoriesParam }).order('todos.deadline ASC')
+    def todos_by_category_names(category_names:)
+      Todo.joins(:categories).distinct.where(categories: { category: category_names }).order('todos.deadline ASC')
     end
 
     field :todos_by_category_ids, [Types::TodoType], null: true do
@@ -70,6 +70,14 @@ module Types
 
     def categories
       Category.all
+    end
+
+    field :category_by_id, Types::CategoryType, null: true do
+      argument :id, Integer, required: true
+    end
+
+    def category_by_id(id:)
+      Category.find(id)
     end
 
     # TODO: remove me

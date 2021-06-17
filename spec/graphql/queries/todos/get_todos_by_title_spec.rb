@@ -6,19 +6,17 @@ module Queries
   module Todos
     RSpec.describe Todos, type: :request do
       describe '.resolve' do
-        let!(:category_1) { create(:category) }
-        let!(:category_2) { create(:category) }
-        let!(:todo) { create(:todo, categories: [category_1, category_2]) }
+        let!(:todo) { create(:todo) }
 
         subject do
-          post '/graphql', params: { query: query(category_ids: [category_1.id, category_2.id]) }
+          post '/graphql', params: { query: query(title_substring: todo.title[rand(todo.title.length), rand(todo.title.length - 1) + 1]) }
           response
         end
 
-        it 'returns the correct todo' do
+        it 'returns the correct todos' do
           is_expected.to have_http_status :ok
           json = JSON.parse(response.body)
-          data = json['data']['todosByCategoryIds']
+          data = json['data']['todosByTitle']
 
           expect(data).to include(
             {
@@ -28,23 +26,19 @@ module Queries
               'deadline' => todo.deadline.gmtime.strftime('%Y-%m-%dT%H:%M:%SZ').to_s,
               'categories' => [
                 {
-                  'id' => category_1.id.to_s,
-                  'category' => category_1.category
-                },
-                {
-                  'id' => category_2.id.to_s,
-                  'category' => category_2.category
+                  'id' => todo.categories.first.id.to_s,
+                  'category' => todo.categories.first.category
                 }
               ]
             }
           )
-        end
+        end 
       end
 
-      def query(category_ids:)
+      def query(title_substring:)
         <<~GQL
           query {
-            todosByCategoryIds(categoryIds:#{category_ids}) {
+            todosByTitle(title:"#{title_substring}") {
               id
               title
               description
