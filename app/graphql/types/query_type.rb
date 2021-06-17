@@ -16,7 +16,7 @@ module Types
     end
 
     field :todos_by_title, [Types::TodoType], null: true do
-      argument :title, String, required: false
+      argument :title, String, required: true
     end
 
     def todos_by_title(title:)
@@ -25,6 +25,14 @@ module Types
         result << todo if todo.title.downcase.include?(title.downcase)
       end
       result
+    end
+
+    field :todo_by_id, Types::TodoType, null: true do
+      argument :id, Integer, required: true
+    end
+
+    def todo_by_id(id:)
+      Todo.find(id)
     end
 
     # field :todo_by_categories, [Types::TodoType], null: true do

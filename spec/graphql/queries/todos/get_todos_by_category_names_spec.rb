@@ -15,7 +15,7 @@ module Queries
           response
         end
 
-        it 'returns the correct todo' do
+        it 'returns the correct todos' do
           is_expected.to have_http_status :ok
           json = JSON.parse(response.body)
           data = json['data']['todosByCategoryNames']

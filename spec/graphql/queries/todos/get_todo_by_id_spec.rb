@@ -9,14 +9,14 @@ module Queries
         let!(:todo) { create(:todo) }
 
         subject do
-          post '/graphql', params: { query: query(title_substring: todo.title[rand(todo.title.length), rand(todo.title.length - 1) + 1]) }
+          post '/graphql', params: { query: query(todo_id: todo.id) }
           response
         end
 
-        it 'returns the correct todos' do
+        it 'returns the correct todo' do
           is_expected.to have_http_status :ok
           json = JSON.parse(response.body)
-          data = json['data']['todosByTitle']
+          data = json['data']['todoById']
 
           expect(data).to include(
             {
@@ -32,13 +32,13 @@ module Queries
               ]
             }
           )
-        end 
+        end
       end
 
-      def query(title_substring:)
+      def query(todo_id:)
         <<~GQL
           query {
-            todosByTitle(title:"#{title_substring}") {
+            todoById(id:#{todo_id}) {
               id
               title
               description
