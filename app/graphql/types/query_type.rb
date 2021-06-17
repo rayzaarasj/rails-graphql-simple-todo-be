@@ -22,7 +22,7 @@ module Types
     def todos_by_title(title:)
       result = []
       Todo.all.each do |todo|
-        result << todo if todo.title.include?(title)
+        result << todo if todo.title.downcase.include?(title.downcase)
       end
       result
     end
