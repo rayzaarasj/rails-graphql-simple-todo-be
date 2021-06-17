@@ -58,6 +58,14 @@ module Types
       Todo.joins(:categories).distinct.where(categories: { category: categoriesParam }).order('todos.deadline ASC')
     end
 
+    field :todos_by_category_ids, [Types::TodoType], null: true do
+      argument :category_ids, [Integer], required: true
+    end
+
+    def todos_by_category_ids(category_ids:)
+      Todo.joins(:categories).distinct.where(categories: { id: category_ids }).order('todos.deadline ASC')
+    end
+
     field :categories, [Types::CategoryType], null: true
 
     def categories
