@@ -7,10 +7,7 @@ module Mutations
     RSpec.describe DeleteTodo, type: :request do
       describe '.resolve' do
         let(:todo) do
-          create(
-            :todo,
-            categories: []
-          )
+          create(:todo)
         end
 
         subject do
