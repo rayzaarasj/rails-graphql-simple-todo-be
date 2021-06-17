@@ -49,7 +49,4 @@ test:
 # for a full overview on how database connection configuration can be specified.
 #
 production:
-  <<: *default
-  database: simple_todo_backend_production
-  username: simple_todo_backend
-  password: <%= ENV['SIMPLE_TODO_BACKEND_DATABASE_PASSWORD'] %>
+  url: <%= ENV['DATABASE_URL'] %>
