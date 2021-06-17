@@ -72,6 +72,14 @@ module Types
       Category.all
     end
 
+    field :category_by_id, Types::CategoryType, null: true do
+      argument :id, Integer, required: true
+    end
+
+    def category_by_id(id:)
+      Category.find(id)
+    end
+
     # TODO: remove me
     field :test_field, String, null: false,
                                description: 'An example field added by the generator'
