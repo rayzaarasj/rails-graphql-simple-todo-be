@@ -6,25 +6,11 @@ module Queries
   module Todos
     RSpec.describe Todos, type: :request do
       describe '.resolve' do
-        let(:category_1) do
-          create(:category)
-        end
-
-        let(:category_2) do
-          create(:category)
-        end
-
-        let(:todo) do
-          create(
-            :todo,
-            categories: [category_1, category_2]
-          )
-        end
+        let!(:category_1) { create(:category) }
+        let!(:category_2) { create(:category) }
+        let!(:todo) { create(:todo, categories: [category_1, category_2]) }
 
         subject do
-          category_1
-          category_2
-          todo
           post '/graphql', params: { query: query(category_ids: [category_1.id, category_2.id]) }
           response
         end

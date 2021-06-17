@@ -6,19 +6,11 @@ module Mutations
   module Todos
     RSpec.describe UpdateTodo, type: :request do
       describe '.resolve' do
-        let(:category_1) do
-          create(:category)
-        end
+        let!(:category_1) { create(:category) }
+        let!(:category_2) { create(:category) }        
+        let!(:category_3) { create(:category) }
 
-        let(:category_2) do
-          create(:category)
-        end
-        
-        let(:category_3) do
-          create(:category)
-        end
-
-        let(:todo) do
+        let!(:todo) do
           create(
             :todo,
             title: 'title_before',

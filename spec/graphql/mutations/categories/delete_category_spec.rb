@@ -6,9 +6,7 @@ module Mutations
   module Categories
     RSpec.describe DeleteCategory, type: :request do
       describe '.resolve' do
-        let(:category) do
-          create(:category)
-        end
+        let!(:category) { create(:category) }
 
         subject do
           post '/graphql', params: { query: query(category_id: category.id )}
