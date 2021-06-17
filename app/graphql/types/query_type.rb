@@ -42,11 +42,11 @@ module Types
     #   result
     # end
 
-    field :todo_by_category_names, [Types::TodoType], null: true do
+    field :todos_by_category_names, [Types::TodoType], null: true do
       argument :category_names, [String], required: true
     end
 
-    def todo_by_category_names(category_names:)
+    def todos_by_category_names(category_names:)
       Todo.joins(:categories).distinct.where(categories: { category: category_names }).order('todos.deadline ASC')
     end
 
