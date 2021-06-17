@@ -6,19 +6,15 @@ module Mutations
   module Todos
     RSpec.describe CreateTodo, type: :request do
       describe '.resolve' do
-        let(:category_1) do
-          create(:category)
-        end
-
-        let(:category_2) do
-          create(:category)
-        end
+        let!(:category_1) { create(:category) }
+        let!(:category_2) { create(:category) }
 
         subject do
           post '/graphql', params: { query: query(category_ids: [category_1.id, category_2.id],
                                                   deadline: (DateTime.now + 1.day).to_s) }
           response
         end
+        
         it 'creates a todo' do
           expect { subject }.to change { Todo.count }.by(1)
         end

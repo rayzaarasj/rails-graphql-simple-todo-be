@@ -5,10 +5,8 @@ module Mutations
   module Categories
     RSpec.describe UpdateCategory, type: :request do
       describe '.resolve' do
-        let(:category) do
-          create(:category, category: "category_before")
-        end
-  
+        let!(:category) { create(:category, category: "category_before") }
+          
         subject do
           post '/graphql', params: { query: query(category_id: category.id) }
           response

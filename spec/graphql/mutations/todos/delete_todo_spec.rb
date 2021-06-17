@@ -6,9 +6,7 @@ module Mutations
   module Todos
     RSpec.describe DeleteTodo, type: :request do
       describe '.resolve' do
-        let(:todo) do
-          create(:todo)
-        end
+        let!(:todo) { create(:todo) }
 
         subject do
           post '/graphql', params: { query: query(todo_id: todo.id) }
